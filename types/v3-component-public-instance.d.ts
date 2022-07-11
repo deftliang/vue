@@ -1,15 +1,11 @@
-import { ExtractDefaultPropTypes, ExtractPropTypes } from './v3-component-props'
 import {
   DebuggerEvent,
-  nextTick,
   ShallowUnwrapRef,
-  UnwrapNestedRefs,
-  WatchOptions,
-  WatchStopHandle
+  UnwrapNestedRefs
 } from './v3-generated'
-import { Data, UnionToIntersection } from './common'
+import { UnionToIntersection } from './common'
 
-import { VueConstructor } from './vue'
+import { Vue, Vue2Instance, VueConstructor } from './vue'
 import {
   ComputedOptions,
   MethodOptions,
@@ -18,6 +14,7 @@ import {
   ComponentOptionsBase
 } from './v3-component-options'
 import { EmitFn, EmitsOptions, Slots } from './v3-setup-context'
+import { VNode } from './vnode'
 
 /**
  * Custom properties added to component instances in any way and can be accessed through `this`
@@ -152,35 +149,42 @@ export type ComponentPublicInstance<
     any,
     any
   >
-> = {
-  // $: ComponentInternalInstance
-  $data: D
-  $props: Readonly<
-    MakeDefaultsOptional extends true
-      ? Partial<Defaults> & Omit<P & PublicProps, keyof Defaults>
-      : P & PublicProps
-  >
-  $attrs: Data
-  $refs: Data
-  $slots: Slots
-  $root: ComponentPublicInstance | null
-  $parent: ComponentPublicInstance | null
-  $emit: EmitFn<E>
-  $el: any
-  $options: Options & MergedComponentOptionsOverride
-  $forceUpdate: () => void
-  $nextTick: typeof nextTick
-  $watch(
-    source: string | Function,
-    cb: Function,
-    options?: WatchOptions
-  ): WatchStopHandle
-} & Readonly<P> &
+> = Vue3Instance<
+  D,
+  P,
+  PublicProps,
+  E,
+  Defaults,
+  MakeDefaultsOptional,
+  Options
+> &
+  Readonly<P> &
   ShallowUnwrapRef<B> &
   UnwrapNestedRefs<D> &
   ExtractComputedReturns<C> &
   M &
   ComponentCustomProperties
+
+interface Vue3Instance<
+  D,
+  P,
+  PublicProps,
+  E,
+  Defaults,
+  MakeDefaultsOptional,
+  Options
+> extends Vue2Instance {
+  $data: D
+  readonly $props: Readonly<
+    MakeDefaultsOptional extends true
+      ? Partial<Defaults> & Omit<P & PublicProps, keyof Defaults>
+      : P & PublicProps
+  >
+  readonly $root: ComponentPublicInstance | null
+  readonly $parent: ComponentPublicInstance | null
+  readonly $emit: EmitFn<E>
+  readonly $options: Options & MergedComponentOptionsOverride
+}
 
 type MergedHook<T = () => void> = T | T[]
 

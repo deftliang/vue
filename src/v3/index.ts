@@ -1,3 +1,7 @@
+/**
+ * Note: also update dist/vue.runtime.mjs when adding new exports to this file.
+ */
+
 export const version: string = '__VERSION__'
 
 export {
@@ -86,5 +90,7 @@ export { useCssVars } from './sfc-helpers/useCssVars'
 export function defineComponent(options: any) {
   return options
 }
+
+export { defineAsyncComponent } from './apiAsyncComponent'
 
 export * from './apiLifecycle'
