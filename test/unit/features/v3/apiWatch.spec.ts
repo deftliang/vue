@@ -144,6 +144,20 @@ describe('api: watch', () => {
     expect(dummy).toBe(1)
   })
 
+  it('deep watch w/ raw refs', async () => {
+    const count = ref(0)
+    const src = reactive({
+      arr: [count]
+    })
+    let dummy
+    watch(src, ({ arr: [{ value }] }) => {
+      dummy = value
+    })
+    count.value++
+    await nextTick()
+    expect(dummy).toBe(1)
+  })
+
   it('watching multiple sources', async () => {
     const state = reactive({ count: 1 })
     const count = ref(1)
@@ -1135,5 +1149,22 @@ describe('api: watch', () => {
     expect(spy).toHaveBeenCalledTimes(1)
     await nextTick()
     expect(spy).toHaveBeenCalledTimes(2)
+  })
+
+  // #12643
+  test('should trigger watch on reactive object when new property is added via set()', () => {
+    const spy = vi.fn()
+    const obj = reactive({})
+    watch(obj, spy, { flush: 'sync' })
+    set(obj, 'foo', 1)
+    expect(spy).toHaveBeenCalled()
+  })
+
+  test('should not trigger watch when calling set() on ref value', () => {
+    const spy = vi.fn()
+    const r = ref({})
+    watch(r, spy, { flush: 'sync' })
+    set(r.value, 'foo', 1)
+    expect(spy).not.toHaveBeenCalled()
   })
 })

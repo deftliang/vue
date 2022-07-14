@@ -1,3 +1,18 @@
+## [2.7.5](https://github.com/vuejs/vue/compare/v2.7.4...v2.7.5) (2022-07-13)
+
+
+### Bug Fixes
+
+* add missing export from `vue.runtime.mjs` ([#12648](https://github.com/vuejs/vue/issues/12648)) ([08fb4a2](https://github.com/vuejs/vue/commit/08fb4a222c016c79af77ab96817d2ed9b7abbd80))
+* detect property add/deletion on reactive objects from setup when used in templates ([a6e7498](https://github.com/vuejs/vue/commit/a6e74985cf2eab6f16d03a8eda3bf3fc7950127c))
+* do not set currentInstance in beforeCreate ([0825d30](https://github.com/vuejs/vue/commit/0825d3087f9f39435838329c16adc2a7bfccd51d)), closes [#12636](https://github.com/vuejs/vue/issues/12636)
+* **reactivity:** fix watch behavior inconsistency + deep ref shallow check ([98fb01c](https://github.com/vuejs/vue/commit/98fb01c79c41c3b9f9134f0abb77d233ce4e5b44)), closes [#12643](https://github.com/vuejs/vue/issues/12643)
+* **sfc:** fix sfc name inference type check ([04b4703](https://github.com/vuejs/vue/commit/04b4703de72b1c1e686a3aa81d5b5b56799dabab)), closes [#12637](https://github.com/vuejs/vue/issues/12637)
+* **types:** support Vue interface augmentations in defineComponent ([005e52d](https://github.com/vuejs/vue/commit/005e52d0b6f1a5bf9679789c5c4b90afd442d86b)), closes [#12642](https://github.com/vuejs/vue/issues/12642)
+* **watch:** fix deep watch for structures containing raw refs ([1a2c3c2](https://github.com/vuejs/vue/commit/1a2c3c2d77ba96ef496f4c86329b7798026511ae)), closes [#12652](https://github.com/vuejs/vue/issues/12652)
+
+
+
 ## [2.7.4](https://github.com/vuejs/vue/compare/v2.7.3...v2.7.4) (2022-07-08)
 
 
@@ -7,7 +22,7 @@
 * **compiler-sfc:** use safer deindent default for compatibility with previous behavior ([b70a258](https://github.com/vuejs/vue/commit/b70a2585fcd102def2bb5a3b2b589edf5311122d))
 * pass element creation helper to static render fns for functional components ([dc8a68e](https://github.com/vuejs/vue/commit/dc8a68e8c6c4e8ed4fdde094004fca272d71ef2e)), closes [#12625](https://github.com/vuejs/vue/issues/12625)
 * **ssr/reactivity:** fix array setting error at created in ssr [[#12632](https://github.com/vuejs/vue/issues/12632)] ([#12633](https://github.com/vuejs/vue/issues/12633)) ([ca7daef](https://github.com/vuejs/vue/commit/ca7daefaa15a192046d22d060220cd595a6a275f))
-* **types:** fix missing instance properties on defineComponent this ([f8de4ca](https://github.com/vuejs/vue/commit/f8de4ca9d458a03378e848b1e62d6507f7124871)), closes [/github.com/vuejs/vue/issues/12628#issuecomment-1177258223](https://github.com//github.com/vuejs/vue/issues/12628/issues/issuecomment-1177258223)
+* **types:** fix missing instance properties on defineComponent this ([f8de4ca](https://github.com/vuejs/vue/commit/f8de4ca9d458a03378e848b1e62d6507f7124871)), closes [#12628](https://github.com/vuejs/vue/issues/12628#issuecomment-1177258223)
 * **types:** fix this.$slots type for defineComponent ([d3add06](https://github.com/vuejs/vue/commit/d3add06e6e18a78a3745240632fecd076eb49d19))
 * **types:** fix type inference when using components option ([1d5a411](https://github.com/vuejs/vue/commit/1d5a411c1e3aa062aa5080432cf3f852f1583ed2))
 * **types:** global component registration type compat w/ defineComponent ([26ff4bc](https://github.com/vuejs/vue/commit/26ff4bc0ed75d8bf7921523a2e546df24ec81d8f)), closes [#12622](https://github.com/vuejs/vue/issues/12622)
@@ -116,6 +131,12 @@ In addition, the following features are explicitly **NOT** ported:
 - ❌ TypeScript syntax in template expressions (incompatible w/ Vue 2 parser)
 - ❌ Reactivity transform (still experimental)
 - ❌ `expose` option is not supported for options components (but `defineExpose()` is supported in `<script setup>`).
+
+### TypeScript Changes
+
+- `defineComponent` provides improved type inference similar to that of Vue 3. Note the type of `this` inside `defineComponent()` is not interoperable with `this` from `Vue.extend()`.
+
+- Similar to Vue 3, TSX support is now built-in. If your project previously had manual JSX type shims, make sure to remove them.
 
 ## Upgrade Guide
 
