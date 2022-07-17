@@ -1139,6 +1139,14 @@ defineComponent({
   }
 })
 
+const X = defineComponent({
+  methods: {
+    foo() {
+      return 123
+    }
+  }
+})
+
 // Missing / mismatching Vue 2 properties
 // https://github.com/vuejs/vue/issues/12628#issuecomment-1177258223
 defineComponent({
@@ -1148,6 +1156,12 @@ defineComponent({
     this.$on('foo', () => {})
     this.$ssrContext
     this.$isServer
+    this.$children[0].$root.$children
+
+    // type casting refs
+    const foo = this.$refs.foo as InstanceType<typeof X>
+    foo.foo().toExponential()
+
     return h('div', {}, [...this.$slots.default!])
   }
 })

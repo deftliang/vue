@@ -14,6 +14,7 @@ import { VNode, VNodeData, VNodeChildren, NormalizedScopedSlot } from './vnode'
 import { PluginFunction, PluginObject } from './plugin'
 import { DefineComponent } from './v3-define-component'
 import { nextTick } from './v3-generated'
+import { ComponentPublicInstance } from './v3-component-public-instance'
 
 export interface CreateElement {
   (
@@ -35,6 +36,8 @@ export interface CreateElement {
   ): VNode
 }
 
+type NeverFallback<T, D> = [T] extends [never] ? D : T
+
 export interface Vue<
   Data = Record<string, any>,
   Props = Record<string, any>,
@@ -47,16 +50,21 @@ export interface Vue<
   // properties with different types in defineComponent()
   readonly $data: Data
   readonly $props: Props
-  readonly $parent: Parent extends never ? Vue : Parent
-  readonly $root: Root extends never ? Vue : Root
-  readonly $children: Children extends never ? Vue[] : Children
-  readonly $options: ComponentOptions<Vue>
+  readonly $parent: NeverFallback<Parent, Vue>
+  readonly $root: NeverFallback<Root, Vue>
+  readonly $children: NeverFallback<Children, Vue[]>
+  readonly $options: NeverFallback<Options, ComponentOptions<Vue>>
   $emit: Emit
 
   // Vue 2 only or shared
   readonly $el: Element
   readonly $refs: {
-    [key: string]: Vue | Element | (Vue | Element)[] | undefined
+    [key: string]:
+      | Vue
+      | Element
+      | ComponentPublicInstance
+      | (Vue | Element | ComponentPublicInstance)[]
+      | undefined
   }
   readonly $slots: { [key: string]: VNode[] | undefined }
   readonly $scopedSlots: { [key: string]: NormalizedScopedSlot | undefined }
