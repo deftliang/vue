@@ -3,20 +3,20 @@
 > Vue.js is a library for building interactive web interfaces. 
 It provides data-driven, nestable view components with a simple and flexible API.
 
-> _[Vue.js - vuejs.org](https://vuejs.org)_
+> _[Vue.js - v2.vuejs.org](https://v2.vuejs.org)_
 
 ## Learning Vue.js
-The [Vue.js website](https://vuejs.org/) is a great resource to get started.
+The [Vue.js website](https://v2.vuejs.org/) is a great resource to get started.
 
 Here are some links you may find helpful:
 
-* [Official Guide](https://vuejs.org/guide/)
-* [API Reference](https://vuejs.org/api/)
-* [Examples](https://vuejs.org/examples/)
+* [Official Guide](https://v2.vuejs.org/guide/)
+* [API Reference](https://v2.vuejs.org/api/)
+* [Examples](https://v2.vuejs.org/examples/)
 
 Get help from other Vue.js users:
 
-* [Vue.js official forum](http://forum.vuejs.org)
+* [Vue.js official forum](https://forum.vuejs.org)
 * [Vue.js on Twitter](https://twitter.com/vuejs)
 * [Vue.js on Gitter](https://gitter.im/vuejs/vue)
 
@@ -24,4 +24,4 @@ _If you have other helpful links to share, or find any of the links above no lon
 
 ## Credit
 
-This TodoMVC application was created by [Evan You](http://evanyou.me).
+This TodoMVC application was created by [Evan You](https://evanyou.me).

@@ -7,7 +7,6 @@ import {
   hasOwn,
   isArray,
   hasProto,
-  isObject,
   isPlainObject,
   isPrimitive,
   isUndef,
@@ -20,7 +19,7 @@ import { isReadonly, isRef, TrackOpTypes, TriggerOpTypes } from '../../v3'
 
 const arrayKeys = Object.getOwnPropertyNames(arrayMethods)
 
-const NO_INIITIAL_VALUE = {}
+const NO_INITIAL_VALUE = {}
 
 /**
  * In some cases we may want to disable observation inside a component's
@@ -80,7 +79,7 @@ export class Observer {
       const keys = Object.keys(value)
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i]
-        defineReactive(value, key, NO_INIITIAL_VALUE, undefined, shallow, mock)
+        defineReactive(value, key, NO_INITIAL_VALUE, undefined, shallow, mock)
       }
     }
   }
@@ -107,22 +106,20 @@ export function observe(
   shallow?: boolean,
   ssrMockReactivity?: boolean
 ): Observer | void {
-  if (!isObject(value) || isRef(value) || value instanceof VNode) {
-    return
+  if (value && hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
+    return value.__ob__
   }
-  let ob: Observer | void
-  if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
-    ob = value.__ob__
-  } else if (
+  if (
     shouldObserve &&
     (ssrMockReactivity || !isServerRendering()) &&
     (isArray(value) || isPlainObject(value)) &&
     Object.isExtensible(value) &&
-    !value.__v_skip /* ReactiveFlags.SKIP */
+    !value.__v_skip /* ReactiveFlags.SKIP */ &&
+    !isRef(value) &&
+    !(value instanceof VNode)
   ) {
-    ob = new Observer(value, shallow, ssrMockReactivity)
+    return new Observer(value, shallow, ssrMockReactivity)
   }
-  return ob
 }
 
 /**
@@ -148,7 +145,7 @@ export function defineReactive(
   const setter = property && property.set
   if (
     (!getter || setter) &&
-    (val === NO_INIITIAL_VALUE || arguments.length === 2)
+    (val === NO_INITIAL_VALUE || arguments.length === 2)
   ) {
     val = obj[key]
   }

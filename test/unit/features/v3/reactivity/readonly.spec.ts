@@ -525,4 +525,14 @@ describe('reactivity/readonly', () => {
     expect(readonlyFoo.x).toBe(1)
     expect(`et operation on key "x" failed`).toHaveBeenWarned()
   })
+
+  test('warn non-extensible objects', () => {
+    const foo = Object.freeze({ a: 1 })
+    try {
+      readonly(foo)
+    } catch (e) {}
+    expect(
+      `Vue 2 does not support creating readonly proxy for non-extensible object`
+    ).toHaveBeenWarned()
+  })
 })
